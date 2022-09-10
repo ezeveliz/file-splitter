@@ -21,7 +21,6 @@ def write_chunk(part, lines):
 
 # Verifico los parámetros pasados y comienzo a procesar el archivo original
 def main(args):
-    print(f'Hi, {args}')
     global filesize
     global header
     global new_filename
@@ -34,14 +33,14 @@ def main(args):
         print('Tenés que incluir el nombre del archivo CSV a dividir')
         return
 
-    # Verifico que el archivo en cuestion exista
+    # Verifico que el archivo en cuestión exista
     try:
         file = open(filename)
     except:
         print('No pudimos encontrar el archivo especificado')
         return
 
-    # Obtengo el nombre de archivo y su extension para posteriormente crear las partes
+    # Obtengo el nombre de archivo y su extensión para posteriormente crear las partes
     new_filename, extension = os.path.splitext(filename)
 
     # Verifico si pasaron el parámetro de tamaño de archivo deseado, si no lo pasaron, será 500K lineas
@@ -49,6 +48,8 @@ def main(args):
         filesize = int(args[2])
     except:
         filesize = default_size
+
+    print("Iniciando división...\n")
 
     count = 0
     part = 0
@@ -58,12 +59,15 @@ def main(args):
         count += 1
         lines.append(line)
         if count % filesize == 0:
+            print("Creando parte " + str(part + 1) + "...")
             write_chunk(part, lines)
             lines = []
             part += 1
     # write remainder
     if len(lines) > 0:
+        print("Creando parte " + str(part + 1) + "...\n")
         write_chunk(part, lines)
+    print("El archivo fue dividido en " + str(part + 1) + " partes en el directorio " + os.path.dirname(filename))
 
 
 # Press the green button in the gutter to run the script.

@@ -11,12 +11,15 @@ header = ""
 new_filename = ""
 # Extensión del archivo original
 extension = ""
+# Delimitadores de columnas en el archivo
+default_delimiter = ","
+delimiter = ""
 
 
 # Escribo cada parte del archivo
 def write_chunk(part, lines):
     with open(new_filename + '_' + str(part) + extension, 'w') as file:
-        file_writer = csv.writer(file, delimiter=",")
+        file_writer = csv.writer(file, delimiter=delimiter)
 
         file_writer.writerow(header)
         file_writer.writerows(lines)
@@ -28,19 +31,20 @@ def main(args):
     global header
     global new_filename
     global extension
+    global delimiter
 
     # Verifico que me hayan pasado el parámetro del nombre de archivo
     try:
         filename = args[1]
     except:
-        print('Tenés que incluir el nombre del archivo CSV a dividir')
+        print('Tenés que incluir el nombre del archivo CSV a dividir.')
         return
 
     # Verifico que el archivo en cuestión exista
     try:
         file = open(filename)
     except:
-        print('No pudimos encontrar el archivo especificado')
+        print('No pudimos encontrar el archivo especificado.')
         return
 
     # Obtengo el nombre de archivo y su extensión para posteriormente crear las partes
@@ -55,11 +59,23 @@ def main(args):
     except:
         filesize = default_size
 
+    # Verifico si me pasaron un delimitador custom
+    try:
+        temp_delimiter = args[3]
+        if len(temp_delimiter) > 0:
+            delimiter = temp_delimiter
+            print("Se utilizará el delimitador: " + delimiter + ", si el mismo no es el correcto las partes generadas "
+                                                                "tendrán un formato incorrecto")
+        else:
+            delimiter = default_delimiter
+    except:
+        delimiter = default_delimiter
+
     print("Iniciando división...\n")
 
     # Esto sirve para interpretar el archivo original como un csv, de esta manera me
     # ahorro el problema de saltos de línea en lugares inesperados
-    file_reader = csv.reader(file, delimiter=",")
+    file_reader = csv.reader(file, delimiter=delimiter)
 
     count = 0
     part = 0

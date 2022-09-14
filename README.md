@@ -18,7 +18,7 @@ Ingresar los siguientes parámetros en el orden especificado
 python main.py "archivo.csv" 100000 "|"
 ```
 
-El comando anterior generará archivos en el mismo directorio en el que se encuentre el archivo original de 100K líneas cada una utilizando el delimitador "|" en el siguiente formato:
+El comando anterior generará las partes en el mismo directorio en el que se encuentre el archivo original de 100K líneas cada una utilizando el delimitador "|" en el siguiente formato:
 * archivo_0.csv
 * archivo_1.csv
 * ...
